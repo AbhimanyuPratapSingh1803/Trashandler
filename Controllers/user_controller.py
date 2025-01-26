@@ -17,16 +17,6 @@ def create_access_token(data: dict, expires_delta: timedelta):
     encoded_jwt = jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
     return encoded_jwt
 
-def create_refresh_token(data: dict, expires_delta: timedelta):
-    return create_access_token(data, expires_delta)
-
-def verify_token(token: str):
-    try:
-        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
-        return payload
-    except JWTError:
-        return None
-
 @router.post("/register", response_model=dict)
 async def register_user(user: RegisterUser):
     user = collection.insert_one(user.dict())
